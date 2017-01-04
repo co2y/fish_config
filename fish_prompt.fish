@@ -11,8 +11,15 @@ function fish_prompt
 
 		printf (git branch ^/dev/null | grep \* | sed 's/* //')' '
 
-		for i in (git branch -qv --no-color|grep \*|cut -d' ' -f4-|cut -d] -f1|tr , \n)\
- (git status --porcelain | cut -c 1-2 | uniq)
+		for i in (git branch -qv --no-color|grep \*|cut -d' ' -f4-|cut -d] -f1|tr , \n)
+			switch $i
+				case "*[ahead *"
+					printf (set_color magenta)⬆' '
+				case "*behind *"
+					printf (set_color magenta)⬇' '
+			end
+		end
+		for i in (git status --porcelain | cut -c 1-2 | uniq)
             switch $i
                 case "*[ahead *"
                     printf (set_color magenta)⬆' '
